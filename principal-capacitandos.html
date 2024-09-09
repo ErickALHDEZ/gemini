@@ -1,0 +1,218 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-md-7">
+
+      <div class="ibox">
+        <div class="ibox-title">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>Lista de capacitandos</h2>
+            </div>
+            <div class="col-md-6 text-right"
+              ng-if="(currentUser.perfil == 'unidad_capacit' || currentUser.perfil == 'unidad_inscrip')">
+              <div class="mail-tools">
+                <button class="btn btn-default btn-labeled" ng-click="vm.nuevoCapacitando()"><span class="btn-label"><i
+                      class="fa fa-plus"></i></span> Agregar nuevo registro</button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="input-group" style="margin-top:16px;width: 230px;">
+                <div class="col-md-9">
+                  <select class="form-control m-b" ng-model="vm.opcionBuscar">
+                    <option value="nombre" selected>Nombre</option>
+                    <option value="numcontrol">No. control</option>
+                    <option value="curp">CURP</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <div class="input-group" style="margin-top:16px;">
+                <input type="text" ng-teclaenter="vm.muestraResultadosBusqueda()" placeholder="Texto a buscar"
+                  class="input form-control" ng-model="vm.cadena_buscar">
+                <span class="input-group-btn">
+                  <button class="btn btn-success btn-labeled" ng-click="vm.limpiaBusqueda()"
+                    ng-show="vm.mostrarbtnLimpiar"><span class="btn-label"><i class="fa fa-trash-o"></i></span>
+                    Limpiar</button>
+                  <button class="btn btn-default btn-labeled" ng-click="vm.muestraResultadosBusqueda()"><span
+                      class="btn-label"><i class="fa fa-search"></i></span> Buscar</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <br>
+        </div>
+        <div class="ibox-content">
+          <table class="tablaDatos table table-condensed no-footer">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>No. Control</th>
+                <th>Tel&eacute;fono</th>
+                <th>Celular</th>
+                <th>Unidad registro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="registro in vm.listaCapacitandos" ng-click="vm.muestraDatosRegistroActual(registro)"
+                ng-class="{seleccion:$index==vm.tablalListaCapacitados.fila_seleccionada}" class="pointer">
+                <td> {{registro.apellidoPaterno +' '+ registro.apellidoMaterno +' '+ registro.nombre}}</td>
+                <td> {{registro.numControl}}</td>
+                <td> {{registro.telefono}}</td>
+                <td> {{registro.celular}}</td>
+                <td> {{registro.unidad_pertenece.nombre}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <tabla-paginacion config="vm.tablalListaCapacitados" paginar="vm.cambiarPagina()"></tabla-paginacion>
+        </div>
+      </div>
+
+    </div> <!-- column1 -->
+    <div class="col-md-5">
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="ibox">
+            <div class="ibox-content" style="height:720px;">
+              <div class="tab-content">
+                <div class="tab-pane active" ng-show="vm.client == 1" ng-init="vm.client = 1">
+                  <div class="row">
+                    <div class="col-lg-12 text-center">
+                      <p>
+                        <h2>Seleccione un registro para ver los detalles</h2>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane active" ng-show="vm.client == 2">
+                  <div class="panel blank-panel">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <ul class="list-group clear-list">
+                          <li class="list-group-item fist-item">
+                            <span class="pull-right"> {{vm.personaSeleccionada.numControl}} </span>
+                            N&uacute;mero de control
+                          </li>
+                          <li class="list-group-item">
+                            <span class="pull-right">
+                              {{vm.personaSeleccionada.apellidoPaterno+' '+vm.personaSeleccionada.apellidoMaterno+' '+vm.personaSeleccionada.nombre}}
+                            </span>
+                            Nombre
+                          </li>
+                          <li class="list-group-item">
+                            <span class="pull-right"> {{vm.personaSeleccionada.curp}} </span>
+                            CURP
+                          </li>
+                          <li class="list-group-item">
+                            <span class="pull-right"> {{vm.personaSeleccionada.email}} </span>
+                            Email
+                          </li>
+                          <li class="list-group-item">
+                                                        <span class=" pull-right"> {{vm.personaSeleccionada.telefono}}
+                            </span>
+                            Tel&eacute;fono
+                          </li>
+                          <li class="list-group-item" >
+                                                        <span class=" pull-right"> {{vm.personaSeleccionada.celular}}
+                            </span>
+                            Celular
+                          </li>
+                          <li class="list-group-item">
+                            <span class="pull-right"> {{vm.personaSeleccionada.domicilio}} </span>
+                            Domicilio
+                          </li>
+                          <li class="list-group-item">
+                            <span class="pull-right"> {{vm.personaSeleccionada.unidad_pertenece.nombre}} </span>
+                            Unidad de registro
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12 text-center">
+                        <button type="button"
+                          ng-show="( (currentUser.perfil == 'unidad_capacit' || currentUser.perfil == 'unidad_inscrip') && (currentUser.unidad_pertenece_id > 1) && (vm.personaSeleccionada.idUnidadAdmtva == 0 || currentUser.unidad_pertenece_id == vm.personaSeleccionada.idUnidadAdmtva) )"
+                          ng-click="vm.editaCapacitando(vm.personaSeleccionada)"
+                          class="btn btn-default btn-sm btn-labeled"><span class="btn-label"><i
+                              class="fa fa-pencil"></i></span> Edita capacitando</button>
+                        <button type="button"
+                          ng-show="( (currentUser.perfil == 'unidad_capacit') && (currentUser.unidad_pertenece_id > 1) && (vm.personaSeleccionada.idUnidadAdmtva == 0 || currentUser.unidad_pertenece_id == vm.personaSeleccionada.idUnidadAdmtva) )"
+                          ng-click="vm.eliminaCapacitando(vm.personaSeleccionada)"
+                          class="btn btn-danger btn-sm btn-labeled"><span class="btn-label"><i
+                              class="fa fa-times"></i></span> Elimina capacitando</button>
+                        <button type="button" ng-click="vm.muestraCapacitando(vm.personaSeleccionada)"
+                          class="btn btn-success btn-sm btn-labeled"><span class="btn-label"><i
+                              class="fa fa-eye"></i></span> Ver datos completos</button>
+                      </div>
+                    </div>
+
+                    <br>
+                    <strong>Cursos inscritos</strong>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div style="width:100%;height:300px">
+                          <div class="full-height-scroll" full-scroll>
+
+                            <p ng-show="(vm.personaSeleccionada.inscripcionesCursos.length == 0)"><br>Ning&uacute;n
+                              curso</p>
+
+                            <table class="table table-striped"
+                              ng-show="(vm.personaSeleccionada.inscripcionesCursos.length > 0)">
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th>Nombre</th>
+                                  <th>Estatus</th>
+                                  <th>Pago</th>
+                                  <th>Calificación</th>
+                                  <th>Doc. Acreditación</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr ng-repeat="inscripcion in vm.personaSeleccionada.inscripcionesCursos">
+                                  <td> {{$index + 1}}</td>
+                                  <td> {{inscripcion.CursosOficiales.nombreCurso}}</td>
+                                  <td class="client-status" ng-switch on="inscripcion.CursosOficiales.estatus">
+                                    <span ng-switch-when="2" class="label label-warning">En espera</span>
+                                    <span ng-switch-when="4" class="label label-primary">Activo</span>
+                                    <span ng-switch-when="5" class="label label-success">Concluido</span>
+                                    <span ng-switch-when="6" class="label label-default">Cerrado</span>
+                                    <span ng-switch-when="7" class="label label-danger">Cancelado</span>
+                                  </td>
+                                  <td class="client-status" ng-switch on="inscripcion.pagado">
+                                    <span ng-switch-when="0"
+                                      class="label label-warning texto-estatus-ptc">Pendiente</span>
+                                    <span ng-switch-when="1" class="label label-success texto-estatus-ptc">Pagado</span>
+                                    <span ng-switch-when="2" class="label label-info texto-estatus-ptc">Condonado</span>
+                                    <span ng-switch-when="3" class="label label-info texto-estatus-ptc">Becado</span>
+                                  </td>
+                                  <td> {{inscripcion.calificacion}} </td>
+                                  <td> {{inscripcion.numDocAcreditacion}} </td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <!--panel blank-panel-->
+                </div> <!-- client == 2 -->
+              </div>
+            </div>
+          </div> <!-- class ibox -->
+
+        </div>
+      </div> <!-- row -->
+
+    </div> <!-- column2 -->
+  </div><!-- row principal -->
+</div>

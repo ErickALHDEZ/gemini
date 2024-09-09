@@ -1,0 +1,501 @@
+<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title"> Datos del capacitando</h4>
+    </div>
+    <div class="modal-body" style="background: #fff;">
+        <form name="form_datos" class="form-horizontal">
+
+            <tabset>
+                <tab heading="Datos personales">
+                        <br>   
+                        <div class="form-group" ng-show="vm.mostrarNumControl">
+                            <label class="col-sm-2 control-label"><p class="text-success">N&uacute;m. control *</p></label>
+                            <div class="col-sm-2"><input type="text" maxlength="13" class="form-control" ng-model="vm.registroEditar.numControl" required ng-readonly="vm.soloLecturaNumControl"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" tooltip-placement="down" tooltip="Si no cuenta con apellido paterno, escribir XX"><p class="text-success">Apellido paterno *</p></label>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.apellidoPaterno" ng-keyup="vm.transformarCadenaPaterno()" required ng-readonly="vm.soloLectura">
+                                    </div>
+                                    <div class="col-md-2 text-right" tooltip-placement="down" tooltip="Si no cuenta con apellido materno, escribir XX" style="width: 120px; padding-right: 0; padding-left: 0;">
+                                        <label class="control-label">Apellido materno</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.apellidoMaterno" ng-keyup="vm.transformarCadenaMaterno()" ng-readonly="vm.soloLectura">
+                                    </div>
+                                    <div class="col-md-1 text-right" style="padding-left: 0;padding-right: 0;">
+                                        <label class="control-label"><p class="text-success">Nombre *</p></label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.nombre" ng-keyup="vm.transformarCadenaNombres()" required ng-readonly="vm.soloLectura">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"><p class="text-success">Sexo *</p></label>
+                            <div class="col-sm-4">
+                                <select class="form-control m-b" ng-model="vm.registroEditar.sexo" required ng-disabled="vm.soloLectura">
+                                    <option value="H">Hombre</option>
+                                    <option value="M">Mujer</option>
+                                </select>
+                                <!-- <div class="radio-inline"><label> <input icheck type="radio" name="sexo" ng-model="vm.registroEditar.sexo" value="H" ng-disabled="vm.soloLectura"> Hombre </label></div>
+                                <div class="radio-inline"><label> <input icheck type="radio" name="sexo" ng-model="vm.registroEditar.sexo" value="M" ng-disabled="vm.soloLectura"> Mujer </label></div> -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Correo electr&oacute;nico</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <input type="email" class="form-control" ng-model="vm.registroEditar.email" ng-readonly="vm.soloLectura">
+                                    </div>
+                                    <!-- <div class="col-md-4">
+                                        <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.correoCompartido"  > Este correo es compartido </label></div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"><p class="text-success">CURP *</p></label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" maxlength="22" ng-change="vm.calculaNacim()" ng-model="vm.registroEditar.curp" required ng-readonly="vm.soloLectura">
+                                        <span ng-show="vm.mostrar_msg_curp" class="alert alert-{{vm.color_msg_curp}}" style="padding: 4px; margin-bottom: 0; text-align: center;">{{vm.mensaje_curp}}</span>
+                                    </div>
+                                    <div class="col-md-1 text-right">
+                                        <label class="control-label">Edad</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.edad" readonly>
+                                    </div>
+                                    <div class="col-md-2 text-right" ng-show="vm.soloLectura">
+                                        <label class="control-label">Edad actual</label>
+                                    </div>
+                                    <div class="col-md-2" ng-show="vm.soloLectura">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.edadActual" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Tel&eacute;fono</label>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" maxlength="10" ng-model="vm.registroEditar.telefono" ng-readonly="vm.soloLectura">
+                                    </div>
+                                    <div class="col-md-2 text-right">
+                                        <label class="control-label">Celular</label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" maxlength="10" ng-model="vm.registroEditar.celular" ng-readonly="vm.soloLectura">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Calle</label>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.domicilio" ng-readonly="vm.soloLectura">
+                                    </div>
+                                    <div class="col-md-1 text-right" style="width: 70px; padding-right: 0; padding-left: 0;">
+                                        <label class="control-label"># exterior</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.numeroExt" ng-readonly="vm.soloLectura">
+                                    </div>
+                                    <div class="col-md-1 text-right" style="padding-left: 0;padding-right: 0;">
+                                        <label class="control-label">Cruzamientos</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.cruzamientos" ng-readonly="vm.soloLectura">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Colonia</label>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.colonia" ng-readonly="vm.soloLectura">
+                                    </div>
+                                    <div class="col-md-2 text-right">
+                                        <label class="control-label">C&oacute;digo postal</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" ng-model="vm.registroEditar.codigoPostal" ng-readonly="vm.soloLectura">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"><p class="text-success">Localidad *</p></label>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select class="form-control m-b" 
+                                            ng-model="vm.registroEditar.idLocalidad"
+                                            ng-options="localidad.idLocalidad as localidad.nombre for localidad in vm.listaLocalidades" required ng-disabled="vm.soloLectura">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 text-right">
+                                        <label class="control-label">Nivel de estudios</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-control m-b" 
+                                            ng-model="vm.registroEditar.idNivelEstudios"
+                                            ng-options="nivel.idNivelEstudios as nivel.nivelEstudios for nivel in vm.listaNivelEstudios" ng-disabled="vm.soloLectura">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Removido el 23/01/24 por Erick 
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Estado civil</label>
+                            <div class="col-sm-10">
+                                <div class="radio-inline"><label> <input icheck type="radio" name="estado_civil" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.estadoCivil" value="soltero"> Soltero </label></div>
+                                <div class="radio-inline"><label> <input icheck type="radio" name="estado_civil" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.estadoCivil" value="casado"> Casado </label></div>
+                                <div class="radio-inline"><label> <input icheck type="radio" name="estado_civil" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.estadoCivil" value="viudo"> Viudo </label></div>
+                                <div class="radio-inline"><label> <input icheck type="radio" name="estado_civil" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.estadoCivil" value="divorciado"> Divorciado </label></div>
+                                <div class="radio-inline"><label> <input icheck type="radio" name="estado_civil" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.estadoCivil" value="union_libre"> Uni&oacute;n libre </label></div>
+                            </div>
+                        </div>
+                        -->
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"></label>
+                            <div class="col-lg-10"><p class="form-control-static text-success">* Campos obligatorios</p></div>
+                        </div>
+                </tab>
+                <tab heading="Datos personales (2)">
+                    <br> 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">¿Presenta alguna discapacidad?</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Tipo de discapacidad</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.disVisual"> Visual </label></div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.disAuditiva"> Auditiva </label></div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.disMotriz"> Física </label></div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.disMental"> Intelectual </label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Otro</label>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">¿Cuál? Favor de indicar</label>
+                                <div class="col-sm-6"><input type="text" class="form-control" ng-model="vm.registroEditar.disOtro" ng-readonly="vm.soloLectura"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Padece alguna enfermedad o alergia</label>
+                        <div class="col-sm-10">
+                            <div class="radio-inline"><label> <input icheck type="radio" name="enfermedad" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.enfermedadPadece" value="si"> SI </label></div>
+                            <div class="radio-inline"><label> <input icheck type="radio" name="enfermedad" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.enfermedadPadece" value="no"> NO </label></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Cual</label>
+                        <div class="col-sm-10"><input type="text" class="form-control" ng-model="vm.registroEditar.enfermedadCual" ng-readonly="vm.soloLectura"></div>
+                    </div>
+                    
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"></label>
+                        <div class="col-lg-10"><p class="form-control-static">En caso de ser menor de edad, favor de llenar lo siguiente</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Nombre del tutor</label>
+                        <div class="col-sm-10"><input type="text" class="form-control" ng-model="vm.registroEditar.tutorNombre" ng-readonly="vm.soloLectura"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">CURP</label>
+                        <div class="col-sm-10"><input type="text" class="form-control" maxlength="22" ng-model="vm.registroEditar.tutorCurp" ng-readonly="vm.soloLectura"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Email del tutor</label>
+                        <div class="col-sm-10"><input type="text" class="form-control" maxlength="32" ng-model="vm.registroEditar.tutorEmail" ng-readonly="vm.soloLectura"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Parentesco</label>
+                        <div class="col-sm-10"><input type="text" class="form-control" ng-model="vm.registroEditar.tutorParentesco" ng-readonly="vm.soloLectura"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Direcci&oacute;n</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" ng-model="vm.registroEditar.tutorDireccion" ng-readonly="vm.soloLectura">
+                                </div>
+                                <div class="col-md-1 text-right">
+                                    <label class="control-label">Tel&eacute;fono</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" maxlength="10" ng-model="vm.registroEditar.tutorTelefono" ng-readonly="vm.soloLectura">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </tab>
+                <tab heading="Documentos personales">
+                    <br> 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Documentaci&oacute;n entregada</label>
+                        <div class="col-sm-10">
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.docActaNacimiento"> Acta de nacimiento </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.docCompEstudios"  > Comprobante de estudios </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.docIdentOficial"  > Identificaci&oacute;n oficial </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.docConstCurp"     > Constancia de la CURP</label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.docFotografias"   > 3 fotograf&iacute;as </label></div>                                                                
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.docCompMigratorio"> Comprobante de calidad migratoria (Extranjeros) </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.docCompDomicilio" > Comprobante de domicilio </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.docCurpTutor"     > CURP del tutor </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.docIneTutor"      > Copia del INE del tutor </label></div>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Datos laborales">
+                    <br> 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Trabaja actualmente</label>
+                        <div class="col-sm-10">
+                            <div class="radio-inline"><label> <input icheck type="radio" name="trabaja" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.trabajaActualmente" value="si"> SI </label></div>
+                            <div class="radio-inline"><label> <input icheck type="radio" name="trabaja" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.trabajaActualmente" value="no"> NO </label></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Actividad espec&iacute;fica que desempe&ntilde;a</label>
+                        <div class="col-sm-10">
+                            <select class="form-control m-b" 
+                                ng-model="vm.registroEditar.idActividad"
+                                ng-options="actividad.idActividad as actividad.actividad for actividad in vm.listaActividades" ng-disabled="vm.soloLectura">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Empresa donde trabaja</label>
+                        <div class="col-sm-10"><input type="text" class="form-control" ng-model="vm.registroEditar.empresaTrabaja" ng-readonly="vm.soloLectura"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Puesto</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" ng-model="vm.registroEditar.empresaPuesto" ng-readonly="vm.soloLectura">
+                                </div>
+                                <div class="col-md-1 text-right">
+                                    <label class="control-label">Antig&uuml;edad</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="vm.registroEditar.empresaAntiguedad" ng-readonly="vm.soloLectura">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Direcci&oacute;n</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" ng-model="vm.registroEditar.empresaDireccion" ng-readonly="vm.soloLectura">
+                                </div>
+                                <div class="col-md-1 text-right">
+                                    <label class="control-label">Tel&eacute;fono</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" maxlength="10" ng-model="vm.registroEditar.empresaTelefono" ng-readonly="vm.soloLectura">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Experiencia laboral</label>
+                        <div class="col-sm-10">
+                            <select class="form-control m-b" 
+                                ng-model="vm.registroEditar.idExperiencia"
+                                ng-options="experiencia.idExperiencia as experiencia.experiencia for experiencia in vm.listaExperiencia" ng-disabled="vm.soloLectura">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Medio por el que se enter&oacute;</label>
+                        <div class="col-sm-10">
+                            <select class="form-control m-b" 
+                                ng-model="vm.registroEditar.idMedio"
+                                ng-options="motivos.idMedio as motivos.medio for motivos in vm.listaMedios" ng-disabled="vm.soloLectura">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Motivo para capacitarse</label>
+                        <div class="col-sm-10">
+                            <select class="form-control m-b" 
+                                ng-model="vm.registroEditar.idMotivo"
+                                ng-options="motivos.idMotivo as motivos.motivo for motivos in vm.listaMotivos" ng-disabled="vm.soloLectura">
+                            </select>
+                        </div>
+                    </div>
+
+                </tab>
+                <tab heading="Grupos (Cuando aplica)">
+                    <br> 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Grupos a los que pertenece (cuando aplica)</label>
+                        <div class="col-sm-10">
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoJefasFamilia" > Mujeres jefas de familia </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoSitViolencia" > Mujeres en situaci&oacute;n de violencia </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoAdolCalle"    > Adolescentes en condiciones de calle (15 a 29 a&ntilde;os) </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoIndigenas"    > Personas ind&iacute;genas</label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoAdultoMayor"  > Persona adulta mayor (60 a&ntilde;os o m&aacute;s) </label></div>                                                                
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoLgbttti"      > Comunidad LGBTTTI </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoDentroCereso" > Personas recluidas en centros de rehabilitaci&oacute;n social (CERESO) </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoCapDiferentes"> Personas con capacidades diferentes </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoMenorReadap"  > Menores recluidos en centros de readaptaci&oacute;n </label></div>
+                            <div class="checkbox"><label> <input icheck type="checkbox" ng-disabled="vm.soloLectura" ng-model="vm.registroEditar.gpoFueraCereso"  > Personas liberadas del centro de rehabilitaci&oacute;n social (CERESO) </label></div>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Cursos" ng-show="vm.soloLectura">
+                    <br>
+                    <table class="table table-striped" ng-show="(vm.registroEditar.inscripcionesCursos.length > 0)">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Estatus</th>
+                            <th>Calificación</th>
+                            <th>Doc. Acreditación</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="inscripcion in vm.registroEditar.inscripcionesCursos">
+                                <td> {{$index + 1}}</td>
+                                <td> {{inscripcion.CursosOficiales.idCurso}}</td>
+                                <td> {{inscripcion.CursosOficiales.nombreCurso}}</td>
+                                <td> {{inscripcion.CursosOficiales.fechaInicio | date:'d/MMMM/yyyy'}}</td>
+                                <td> {{inscripcion.CursosOficiales.fechaFin | date:'d/MMMM/yyyy'}}</td>
+                                <td class="client-status" ng-switch on="inscripcion.CursosOficiales.estatus">
+                                    <span ng-switch-when="2" class="label label-warning">En espera</span>
+                                    <span ng-switch-when="4" class="label label-primary">Activo</span>
+                                    <span ng-switch-when="5" class="label label-success">Concluido</span>
+                                    <span ng-switch-when="6" class="label label-default">Cerrado</span>
+                                    <span ng-switch-when="7" class="label label-danger">Cancelado</span>
+                                </td>
+                                <td> {{inscripcion.calificacion}} </td>
+                                <td> {{inscripcion.numDocAcreditacion}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </tab>
+                <tab heading="Evaluaciones" ng-show="vm.soloLectura">
+                    <br>
+                    <table class="table table-striped" ng-show="(vm.registroEditar.inscripcionesEvaluaciones.length > 0)">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Fecha Evaluación</th>
+                            <th>Fecha Evaluación Real</th>
+                            <th>Estatus</th>
+                            <th>Calificación</th>
+                            <th>Doc. Acreditación</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="inscripcion in vm.registroEditar.inscripcionesEvaluaciones">
+                                <td> {{$index + 1}}</td>
+                                <td> {{inscripcion.Evaluaciones.idEvaluacion}}</td>
+                                <td> {{inscripcion.Evaluaciones.tipoEvaluacion == 1? inscripcion.Evaluaciones.nombreEvaluacion : inscripcion.Evaluaciones.codigoEstandar + '-' + inscripcion.Evaluaciones.nombreEstandar}}</td>
+                                <td> {{inscripcion.Evaluaciones.fechaEvaluacion | date:'d/MMMM/yyyy'}}</td>
+                                <td> {{inscripcion.Evaluaciones.fechaEvaluacionReal | date:'d/MMMM/yyyy'}}</td>
+                                <td class="client-status" ng-switch on="inscripcion.Evaluaciones.estatus">
+                                    <span ng-switch-when="1" class="label label-warning">En espera</span>
+                                    <span ng-switch-when="2" class="label label-primary">Activo</span>
+                                    <span ng-switch-when="4" class="label label-success">Concluido</span>
+                                    <span ng-switch-when="5" class="label label-default">Cancelado</span>
+                                </td>
+                                <td> {{inscripcion.calificacion}} </td>
+                                <td> {{inscripcion.numDocAcreditacion}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </tab>
+
+                <!-- <tab heading="Foto">
+                        <br> 
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Foto</label>                                                            
+                            <input type='file' ng-model='vm.temp.foto_alumno' base-sixty-four-input accept="image/*">
+                            <img style="margin-top:10px" base-sixty-four-image="vm.temp.foto_alumno" alt="" ng-src="{{vm.registroEditar.foto}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-10">
+                                <button type="button" class="btn btn-danger" ng-click="borraFoto()">Borrar foto</button>
+                            </div>
+                        </div>
+                </tab> -->
+            </tabset>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+
+        <div class="row">
+            <div class="col-md-9">
+                <div ng-show="vm.mostrar_msg_error" class="alert alert-danger" style="padding: 4px; margin-bottom: 0; text-align: center;">{{vm.mensaje}}</div>
+                <div class="sk-spinner sk-spinner-three-bounce" ng-show="vm.mostrarSpiner">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="button" ng-click="$dismiss()" class="btn btn-white btn-sm btn-labeled"><span class="btn-label"><i class="fa fa-sign-out"></i></span> Cancelar</button>
+                <button type="button" ng-show="!vm.soloLectura" ng-click="vm.guardar()" ng-disabled="form_datos.$invalid" class="btn btn-default btn-sm btn-labeled"><span class="btn-label"><i class="fa fa-check"></i></span> Guardar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
